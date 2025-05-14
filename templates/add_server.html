@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Server - MCP Bedrock Client</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .navbar-brand {
+            font-weight: 600;
+        }
+        .card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .footer {
+            margin-top: 50px;
+        }
+        .error-message {
+            color: #dc3545;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #f5c6cb;
+            border-radius: 4px;
+            background-color: #f8d7da;
+            display: none;
+        }
+        .success-message {
+            color: #28a745;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #c3e6cb;
+            border-radius: 4px;
+            background-color: #d4edda;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">MCP Bedrock Client</a>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h2 class="mb-0">Add New MCP Server</h2>
+                    </div>
+                    <div class="card-body">
+                        <!-- Error message container -->
+                        <div id="errorMessage" class="error-message"></div>
+                        
+                        <!-- Success message container -->
+                        <div id="successMessage" class="success-message"></div>
+                        
+                        <form id="addServerForm" action="/web/add_server" method="post">
+                            <div class="mb-4">
+                                <label for="server_name" class="form-label fw-bold">Server Name:</label>
+                                <input type="text" id="server_name" name="server_name" class="form-control" 
+                                       placeholder="e.g., postgresql2" required>
+                                <div class="form-text">A unique identifier for this server</div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="server_url" class="form-label fw-bold">Server URL:</label>
+                                <input type="url" id="server_url" name="server_url" class="form-control" 
+                                       placeholder="e.g., https://mcp-pg.example.com/sse" required>
+                                <div class="form-text">The URL endpoint for the MCP server</div>
+                            </div>
+
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="allow_http" name="allow_http">
+                                <label class="form-check-label" for="allow_http">Allow HTTP (check this for non-HTTPS URLs)</label>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="command" class="form-label fw-bold">Command:</label>
+                                <input type="text" id="command" name="command" class="form-control" 
+                                       value="npx" required>
+                                <div class="form-text">The command to execute (usually "npx")</div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="transport" class="form-label fw-bold">Transport:</label>
+                                <select id="transport" name="transport" class="form-select">
+                                    <option value="sse-only" selected>SSE Only</option>
+                                    <option value="websocket">WebSocket</option>
+                                </select>
+                                <div class="form-text">The transport protocol to use</div>
+                            </div>
+                            
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary" id="addButton">Add Server</button>
+                                <a href="/web/connect" class="btn btn-outline-secondary">Back to Connect</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer py-3 bg-light">
+        <div class="container text-center">
+            <span class="text-muted">© 2025 MCP Bedrock Client</span>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle form submission with validation
+            document.getElementById('addServerForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                const errorMessageElement = document.getElementById('errorMessage');
+                const successMessageElement = document.getElementById('successMessage');
+                errorMessageElement.style.display = 'none';
+                successMessageElement.style.display = 'none';
+                
+                // Basic validation
+                const serverName = document.getElementById('server_name').value.trim();
+                const serverUrl = document.getElementById('server_url').value.trim();
+                
+                if (!serverName) {
+                    showError('Please enter a server name.');
+                    return;
+                }
+                
+                if (!serverUrl) {
+                    showError('Please enter a server URL.');
+                    return;
+                }
+                
+                // If validation passes, submit the form
+                const formData = new FormData(this);
+                
+                fetch('/web/add_server', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showSuccess(data.message || 'Server added successfully!');
+                        // Reset form
+                        document.getElementById('addServerForm').reset();
+                    } else {
+                        showError(data.error || 'Failed to add server.');
+                    }
+                })
+                .catch(error => {
+                    showError('An error occurred: ' + error.message);
+                });
+            });
+            
+            function showError(message) {
+                const errorMessageElement = document.getElementById('errorMessage');
+                errorMessageElement.textContent = message;
+                errorMessageElement.style.display = 'block';
+                
+                // Scroll to the error message
+                errorMessageElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            
+            function showSuccess(message) {
+                const successMessageElement = document.getElementById('successMessage');
+                successMessageElement.textContent = message;
+                successMessageElement.style.display = 'block';
+                
+                // Scroll to the success message
+                successMessageElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        });
+    </script>
+</body>
+</html>

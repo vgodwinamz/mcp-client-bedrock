@@ -1,3 +1,6 @@
+# mcp-client-bedrock
+This MCP client runs stand alone in any environment with Amazon Bedrock Models supported for Tool Use
+
 ## How to Use the Modularized Code
 
 After organizing the code into these files, you can use the client as follows:
@@ -30,5 +33,3 @@ python3.12 -m venv venv
 source venv/bin/activate
 
 python3 -m bedrock_mcp_postgres --region us-west-2
-
-
