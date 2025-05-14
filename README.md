@@ -13,14 +13,14 @@ The Model Context Protocol (MCP) is a standardized interface that allows applica
 
 When paired with Amazon Bedrock's extensive model catalog, MCP provides a powerful framework for building AI-powered applications.
 
-## Introducing the bedrock-mcp-client Project
+## Introducing the  Project
 
-The bedrock-mcp-client is a Python-based implementation that combines Amazon Bedrock's foundation models with MCP servers. It provides both a CLI interface for interactive use and a programmable API for integration into custom applications. 
+The Custom MCP Client using Amazon Bedrock is a Python-based implementation that combines Amazon Bedrock's foundation models with MCP servers. It provides both a CLI and Web interface for interactive use and a programmable API for integration into custom applications. Leveraging the Converse API, this solution offers a consistent and unified way to interact with various Bedrock models, eliminating the need to manage model-specific differences. The Converse API streamlines multi-turn conversations, enables tool use (function calling), and reduces code complexity by allowing developers to write code once and use it seamlessly across supported models. This simplifies integration, accelerates development, and enhances flexibility for building advanced conversational AI solutions. 
 
 The project consists of two main components:
 
-CLI Client: A command-line interface for interacting with MCP servers using Amazon Bedrock models
-Web UI: A browser-based interface built with FastAPI for a more visual interaction experience
+* CLI Client: A command-line interface for interacting with MCP servers using Amazon Bedrock models
+* Web UI: A browser-based interface built with FastAPI for a more visual interaction experience
 
 ## Key Features
 
@@ -36,11 +36,11 @@ Web UI: A browser-based interface built with FastAPI for a more visual interacti
 
 The project follows a modular architecture with several key components:
 
-BedrockClient: Handles communication with Amazon Bedrock's API
-MCPServerConnection: Manages connections to individual MCP servers
-GeneralMCPBedrockClient: Orchestrates interactions between Bedrock and MCP servers
-ChatMemory: Maintains conversation history and context
-API: FastAPI-based web interface for browser access
+* BedrockClient: Handles communication with Amazon Bedrock's API
+* MCPServerConnection: Manages connections to individual MCP servers
+* MCP-BedrockOrchestrator : Orchestrates interactions between Bedrock and MCP servers
+* ChatMemory: Maintains conversation history and context
+* API: FastAPI-based web interface for browser access
 
 ## Getting Started
 
