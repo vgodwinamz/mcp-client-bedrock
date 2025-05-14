@@ -34,7 +34,7 @@ The project consists of two main components:
 
 ## Architecture Overview
 
-![Image description](./images/image.png)
+![Image description](./images/mcp-client-bedrock-architecture.png)
 
 The project follows a modular architecture with several key components:
 
