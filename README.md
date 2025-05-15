@@ -22,6 +22,13 @@ The project consists of two main components:
 * CLI Client: A command-line interface for interacting with MCP servers using Amazon Bedrock models
 * Web UI: A browser-based interface built with FastAPI for a more visual interaction experience
 
+⚠️ Disclaimer
+EXPERIMENTAL: This project is experimental and provided as a demonstration of what's possible with MCP and PostgreSQL. All recommendations and code should be carefully reviewed before implementation in any production environment.
+
+NOT OFFICIAL: This is a personal project and not affiliated with, endorsed by, or representative of any organization I work for or contribute to. All opinions and approaches are my own.
+
+NO LIABILITY: This tool is provided "as is" without warranty of any kind. Use at your own risk. The author is not liable for any damages or issues arising from the use of this software.
+
 ## Key Features
 
 * Multi-server support: Connect to multiple MCP servers simultaneously
